@@ -75,7 +75,7 @@ void initMalloc(){
 void printBlockList(){
     metaBlock* m = (metaBlock*)myblock;
     while(isValidAddress(m)){
-        printf("\t%x\t", m);
+        printf("\t%d\t", m);
         printf("%hu\t", getDataSize(m));
         printf("%d\n", isFree(m) ? 1 : 0);
         m = getNextMetaBlock(m);

@@ -21,41 +21,49 @@ void* mymalloc(size_t allocationSize, char* filename, int line);
 void myfree(void* p, char* filename, int line);
 void merge(metaBlock* justFreed);
 
-//mask out the free bit
+//gets the data size stored in a metablock
 unsigned short getDataSize(metaBlock* block){
     return *block & 0b0111111111111111;
 }
 
+//gets a pointer to the data belonging to a metablock
 void* getDataPointer(metaBlock* block){
     return (void*)((char*)block + sizeof(metaBlock));
 }
 
+//sets the data size of a metablock
 void setDataSize(metaBlock* block, unsigned short size){
     *block = size | isFree(block);
 }
 
-//is the free bit set or not
+//determines if a meta block is free or not indicated by the highest bit
+//if the metablock is free: a positive unsigned short is returned, otherwise: 0
 unsigned short isFree(metaBlock* block){
     return *block & 0b1000000000000000;
 }
 
+//sets a metablock to be free
 void setFreeBit(metaBlock* block){
     *block |= 0b1000000000000000;
 }
 
+//sets a metablock to be not free
 void eraseFreeBit(metaBlock* block){
     *block &= 0b0111111111111111;
 }
 
+//gets the address of the next metablock in memory
 metaBlock* getNextMetaBlock(metaBlock* block){
     unsigned short size = getDataSize(block);
     return (metaBlock*)((char*)getDataPointer(block) + size);
 }
 
+//checks if an address lies within the bounds of memory
 short isValidAddress(metaBlock* block){
     return ((char*)block >= (char*)myblock && (char*)block < (myblock + 4096));
 };
 
+//initializes the first metablock of memory
 void initMalloc(){
     metaBlock* firstBlock = (metaBlock*)myblock;
     setFreeBit(firstBlock);
@@ -63,6 +71,7 @@ void initMalloc(){
     ++_firstMalloc;
 }
 
+//prints out information about each metablock in memory (debugging)
 void printBlockList(){
     metaBlock* m = (metaBlock*)myblock;
     while(isValidAddress(m)){
@@ -73,6 +82,8 @@ void printBlockList(){
     }
 }
 
+
+//splits one metablock in two so that a metablock only contains the requested allocation size
 void split(metaBlock* initialBlock, unsigned short size){
     metaBlock* newBlock = (metaBlock*)((char*)getDataPointer(initialBlock) + size);
 
@@ -83,6 +94,11 @@ void split(metaBlock* initialBlock, unsigned short size){
     eraseFreeBit(initialBlock);
 }
 
+//allocates allocationSize bytes in memory and returns a pointer to the beginning of those bytes
+//if parameter allocationSize is < 1: "provide positive size parameter for malloc()" is printed
+// and NULL is returned
+//if there is not enough memory to allocate allocationSize: "not enough memory to malloc() requested size"
+// is printed and NULL is returned
 void* mymalloc(size_t allocationSize, char* filename, int line){
     if(_firstMalloc == 0){
         initMalloc();
@@ -96,13 +112,12 @@ void* mymalloc(size_t allocationSize, char* filename, int line){
     while((getDataSize(current) < allocationSize || isFree(current) == 0) && isValidAddress(getNextMetaBlock(current))){
         current = getNextMetaBlock(current);
     }
-    //perfect size, no need to split any blocks
     if(getDataSize(current) == allocationSize){
+        //found a block of perfect size, no need to split any blocks
         eraseFreeBit(current);
-        //printf("Perfect size block allocated\n");
         return getDataPointer(current);
     } else if(getDataSize(current) > allocationSize){
-        //block is bigger than what we need so we split it in two
+        //block found is larger than allocationSize so it gets split in two
         split(current, allocationSize);
         return getDataPointer(current);
     } else{
@@ -111,6 +126,7 @@ void* mymalloc(size_t allocationSize, char* filename, int line){
     }
 }
 
+//combines adjacent free metablocks into a singular free metablock
 void merge(metaBlock* justFreed){
     metaBlock* current = (metaBlock*)myblock;
     metaBlock* next;
@@ -131,6 +147,9 @@ void merge(metaBlock* justFreed){
     }
 }
 
+//free bytes allocated in memory so that they can be reallocated
+//if parameter p is not a valid memory address: "invalid address to free" is printed and the function returns
+//if parameter p has already been freed: "variable has already been freed" is printed and the function returns
 void myfree(void* p, char* filename, int line){
     metaBlock* toBeFreed = (metaBlock*)((char*)p - sizeof(metaBlock));
     //check if toBeFreed is a valid meta block
@@ -152,12 +171,20 @@ void myfree(void* p, char* filename, int line){
     }
 }
 
-int main(){
-    char* r = (char*)malloc(2048);
-    char* q = (char*)malloc(2044);
-    printBlockList();
-    free(r);
-    free(q);
-    printf("\nAfter Free\n");
-    printBlockList();
-}   
+// int main(){
+//     int i = 0;
+//     while(i++ < 120){
+//         char* r = (char*)malloc(1);
+//         free(r);
+//     }
+//     i = 0;
+//     char* arr[120];
+//     while(i++ < 120){
+//         arr[i] = (char*)malloc(1);
+//     }
+//     i = 0;
+//     while(i++ < 120){
+//         free(arr[i]);
+//     }
+//     printBlockList();
+// }   

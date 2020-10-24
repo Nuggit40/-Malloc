@@ -181,6 +181,10 @@ int main(){
         int malloc_counter =0; 
         int counter = 0;
         int counter1 = 0;
+        int top =0; 
+        int i=0;
+        int mallocCount=0;
+        int freeCount = 0;
         while (counter<120){
             //function pointer to malloc calling malloc 1 byte
             char* r = (char*)malloc(1);
@@ -204,7 +208,7 @@ int main(){
         counter=0;
         
         char* pointers[120];
-    int top, i, mallocCount, freeCount = 0;
+    // int top, i, mallocCount, freeCount = 0;
     for(i; i < 240; ++i){
         int r = rand() % 2;
         if(mallocCount < 120 && r == 0){
@@ -212,23 +216,29 @@ int main(){
             pointers[top] = (char*)malloc(1);
             ++top;
             ++mallocCount;
+            printf("malloced byte %d \n", mallocCount);
+             printf("total opperations %d \n", mallocCount+freeCount);
         } else if(freeCount < 120 && r == 1 && top != 0){
             //pointers to free again
             free(pointers[top-1]);
             --top;
             ++freeCount;
+            printf("freed byte %d \n", freeCount);
         } else if(r == 0){
             //no more mallocs needed, do a free
             free(pointers[top-1]);
             --top;
             ++freeCount;
+            printf("freed byte %d \n", freeCount);
         } else if(r == 1){
             //no more pointers to free, do a malloc
             pointers[top] = (char*)malloc(1);
             ++top;
             ++mallocCount;
+            printf("malloced byte %d \n", mallocCount);
         }
     }
+    
     //     char* arr1[120];
     // while (counter1<240 && counter1 > -1){
             

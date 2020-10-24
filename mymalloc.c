@@ -4,7 +4,6 @@
 #define MEMORY_SIZE 4096
 typedef unsigned short metaBlock;
 static char myblock[4096];
-short _firstMalloc = 0;
 
 metaBlock getDataSize(metaBlock* block);
 void* getDataPointer(metaBlock* block);
@@ -68,12 +67,12 @@ void initMalloc(){
     metaBlock* firstBlock = (metaBlock*)myblock;
     setFreeBit(firstBlock);
     setDataSize(firstBlock, MEMORY_SIZE - sizeof(metaBlock));
-    ++_firstMalloc;
 }
 
 //prints out information about each metablock in memory (debugging)
 void printBlockList(){
     metaBlock* m = (metaBlock*)myblock;
+    printf("\taddress\tsize\tfree\n");
     while(isValidAddress(m)){
         printf("\t%d\t", m);
         printf("%hu\t", getDataSize(m));
@@ -100,7 +99,8 @@ void split(metaBlock* initialBlock, unsigned short size){
 //if there is not enough memory to allocate allocationSize: "not enough memory to malloc() requested size"
 // is printed and NULL is returned
 void* mymalloc(size_t allocationSize, char* filename, int line){
-    if(_firstMalloc == 0){
+    //initialize the first metadata block on the first mymalloc() call
+    if((metaBlock)myblock[0] == 0){
         initMalloc();
     }
     if(allocationSize <= 0){
@@ -172,19 +172,11 @@ void myfree(void* p, char* filename, int line){
 }
 
 // int main(){
-//     int i = 0;
-//     while(i++ < 120){
-//         char* r = (char*)malloc(1);
-//         free(r);
-//     }
-//     i = 0;
-//     char* arr[120];
-//     while(i++ < 120){
-//         arr[i] = (char*)malloc(1);
-//     }
-//     i = 0;
-//     while(i++ < 120){
-//         free(arr[i]);
-//     }
+//     void* a = malloc(200);
+//     void* b = malloc(300);
+//     printBlockList();
+//     printf("\n");
+//     free(a);
+//     free(b);
 //     printBlockList();
 // }   

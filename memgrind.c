@@ -214,12 +214,12 @@ int main(){
             ++mallocCount;
         } else if(freeCount < 120 && r == 1 && top != 0){
             //pointers to free again
-            free(pointers[top]);
+            free(pointers[top-1]);
             --top;
             ++freeCount;
         } else if(r == 0){
             //no more mallocs needed, do a free
-            free(pointers[top]);
+            free(pointers[top-1]);
             --top;
             ++freeCount;
         } else if(r == 1){

@@ -67,7 +67,7 @@ int i = 0;
 int mallocCount = 0;
       
 int freeCount = 0;
-      
+// Workload A mallocing a byte and immediatley freeing it
 while (counter < 120)
 	{
 	  
@@ -81,6 +81,8 @@ while (counter < 120)
 counter += 1;
 	
 } 
+
+//calculating time of loop
 gettimeofday (&timeA, NULL);
       
 loadA[big_count] = (timeA.tv_usec) - (current_time.tv_usec);
@@ -90,7 +92,7 @@ last_time_interval = (current_time.tv_usec);
 counter = 0;
       
 char *arr[120];
-      
+// Workload B " malloc() 1 byte, store the pointer in an array - do this 120 times."     
 while (counter < 120)
 	{
 	  
@@ -113,7 +115,7 @@ counter += 1;
 }
       
 counter = 0;
-      
+//calculating time of loop
 gettimeofday (&timeB, NULL);
       
 loadB[big_count] = (timeB.tv_usec) - (current_time.tv_usec);
@@ -123,7 +125,8 @@ loadB[big_count] = (timeB.tv_usec) - (current_time.tv_usec);
       
 char *pointers[120];
       
-	
+//Workload C  240 times, randomly choose between a 1 byte malloc() or free()ing one of the malloc()ed pointers
+
 	for (i; i < 240; ++i)
 	{
 	  
@@ -180,6 +183,7 @@ if (mallocCount < 120 && r == 0)
 	    }
 	
 } 
+//calculating time of loop
 gettimeofday (&timeC, NULL);
       
 loadC[big_count] = (timeC.tv_usec) - (current_time.tv_usec);
@@ -188,7 +192,8 @@ loadC[big_count] = (timeC.tv_usec) - (current_time.tv_usec);
 	last_time_interval = current_time.tv_usec;
       
 counter = 0;
-      
+
+// Workload D attempt at over malloc
 while (counter < 120)
 	{
 	  
@@ -200,14 +205,16 @@ counter += 120;
 	
 } 
 counter = 0;
-      
+// calculating time of loop
 gettimeofday (&timeD, NULL);
       
 loadD[big_count] = (timeD.tv_usec) - (current_time.tv_usec);
       
 	
 	last_time_interval = current_time.tv_usec;
-      
+
+
+//Workload E malloc 0 and attempt to free with no bytes malloced      
 while (counter < 120)
 	{
 	  
@@ -218,6 +225,7 @@ free (r);
 counter += 120;
 	
 } 
+// calculating time of loop
 gettimeofday (&timeE, NULL);
       
 loadE[big_count] = (timeE.tv_usec) - (current_time.tv_usec);

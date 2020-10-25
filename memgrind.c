@@ -46,26 +46,26 @@ int main(){
             pointers[top] = (char*)malloc(1);
             ++top;
             ++mallocCount;
-            printf("malloced byte %d \n", mallocCount);
-             printf("total opperations %d \n", mallocCount+freeCount);
+            //printf("malloced byte %d \n", mallocCount);
+             //printf("total opperations %d \n", mallocCount+freeCount);
         } else if(freeCount < 120 && r == 1 && top != 0){
             //pointers to free again
             free(pointers[top-1]);
             --top;
             ++freeCount;
-            printf("freed byte %d \n", freeCount);
+            //printf("freed byte %d \n", freeCount);
         } else if(r == 0){
             //no more mallocs needed, do a free
             free(pointers[top-1]);
             --top;
             ++freeCount;
-            printf("freed byte %d \n", freeCount);
+            //printf("freed byte %d \n", freeCount);
         } else if(r == 1){
             //no more pointers to free, do a malloc
             pointers[top] = (char*)malloc(1);
             ++top;
             ++mallocCount;
-            printf("malloced byte %d \n", mallocCount);
+            //printf("malloced byte %d \n", mallocCount);
         }
     }
     

@@ -1,0 +1,3 @@
+Workload D will attempt to malloc more bytes than allowed. We decided to include this workload to demonstrate that the mymalloc will not allow the allocation of memory outside the alloted ammount.
+
+Workload E will attempt to malloc 0 free when there are no bytes malloced. It will return NULL and give an error when attempting to free. We chose to include this workload to demostrate that malloc 0 returns null and that free can not be used when there are no bytes to be freed.

@@ -118,12 +118,12 @@ gettimeofday (&timeB, NULL);
       
 loadB[big_count] = (timeB.tv_usec) - (current_time.tv_usec);
       
-	//loadB[big_count] == current_time.tv_usec - last_time_interval;
+	
 	last_time_interval = current_time.tv_usec;
       
 char *pointers[120];
       
-	// int top, i, mallocCount, freeCount = 0;
+	
 	for (i; i < 240; ++i)
 	{
 	  
@@ -140,8 +140,7 @@ if (mallocCount < 120 && r == 0)
 ++mallocCount;
 	      
  
-		// printf("malloced byte %d \n", mallocCount);
-		// printf("total opperations %d \n", mallocCount+freeCount);
+		
 	    }
 	  else if (freeCount < 120 && r == 1 && top != 0)
 	    {
@@ -153,7 +152,7 @@ if (mallocCount < 120 && r == 0)
 	      
 ++freeCount;
 	      
-		// printf("freed byte %d \n", freeCount);
+		
 	    }
 	  else if (r == 0)
 	    {
@@ -165,7 +164,7 @@ if (mallocCount < 120 && r == 0)
 	      
 ++freeCount;
 	      
-		// printf("freed byte %d \n", freeCount);
+		
 	    }
 	  else if (r == 1)
 	    {
@@ -177,7 +176,7 @@ if (mallocCount < 120 && r == 0)
 	      
 ++mallocCount;
 	      
-		// printf("malloced byte %d \n", mallocCount);
+		
 	    }
 	
 } 
@@ -185,7 +184,7 @@ gettimeofday (&timeC, NULL);
       
 loadC[big_count] = (timeC.tv_usec) - (current_time.tv_usec);
       
-	//loadC[big_count] == current_time.tv_usec - last_time_interval;
+	
 	last_time_interval = current_time.tv_usec;
       
 counter = 0;
@@ -206,7 +205,7 @@ gettimeofday (&timeD, NULL);
       
 loadD[big_count] = (timeD.tv_usec) - (current_time.tv_usec);
       
-	//loadD[big_count] == current_time.tv_usec - last_time_interval;
+	
 	last_time_interval = current_time.tv_usec;
       
 while (counter < 120)
@@ -223,11 +222,11 @@ gettimeofday (&timeE, NULL);
       
 loadE[big_count] = (timeE.tv_usec) - (current_time.tv_usec);
       
-	//loadE[big_count] == current_time.tv_usec - last_time_interval;
+	
 	last_time_interval = current_time.tv_usec;
       
  
-//printf ("thats a big count %d\n", big_count);
+
       
 big_count += 1;
     

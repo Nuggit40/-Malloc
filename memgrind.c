@@ -71,47 +71,27 @@ int main(){
             pointers[top] = (char*)malloc(1);
             ++top;
             ++mallocCount;
-           // printf("malloced byte %d \n", mallocCount);
-            // printf("total opperations %d \n", mallocCount+freeCount);
+            //printf("malloced byte %d \n", mallocCount);
+             //printf("total opperations %d \n", mallocCount+freeCount);
         } else if(freeCount < 120 && r == 1 && top != 0){
             //pointers to free again
             free(pointers[top-1]);
             --top;
             ++freeCount;
-           // printf("freed byte %d \n", freeCount);
+            //printf("freed byte %d \n", freeCount);
         } else if(r == 0){
             //no more mallocs needed, do a free
             free(pointers[top-1]);
             --top;
             ++freeCount;
-           // printf("freed byte %d \n", freeCount);
+            //printf("freed byte %d \n", freeCount);
         } else if(r == 1){
             //no more pointers to free, do a malloc
             pointers[top] = (char*)malloc(1);
             ++top;
             ++mallocCount;
-           // printf("malloced byte %d \n", mallocCount);
-}
-    }
-    gettimeofday(&timeC, NULL);
-    loadC[big_count] = (timeC.tv_usec) - (current_time.tv_usec) ;
-    //loadC[big_count] == current_time.tv_usec - last_time_interval;
-    last_time_interval = current_time.tv_usec;
-    counter=0;
-    while(counter <120 && big_count < 1){
-        char* r = (char*)malloc(5000);
-        free(r);
-        counter+=60;
-    }
-        counter=0;
-    gettimeofday(&timeD, NULL);
-    loadD[big_count] = (timeD.tv_usec) - (current_time.tv_usec) ;
-    //loadD[big_count] == current_time.tv_usec - last_time_interval;
-    last_time_interval = current_time.tv_usec;
-    while(counter<120 && big_count < 1){
-        char* r = (char*)malloc(0);
-        free(r);
-        counter+=60;
+            //printf("malloced byte %d \n", mallocCount);
+        }
     }
     gettimeofday(&timeE, NULL);
     loadE[big_count] =  (timeE.tv_usec) - (current_time.tv_usec) ;

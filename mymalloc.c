@@ -74,7 +74,7 @@ void printBlockList(){
     metaBlock* m = (metaBlock*)myblock;
     printf("\taddress\tsize\tfree\n");
     while(isValidAddress(m)){
-        printf("\t%d\t", m);
+        printf("\t%hn\t", m);
         printf("%hu\t", getDataSize(m));
         printf("%d\n", isFree(m) ? 1 : 0);
         m = getNextMetaBlock(m);

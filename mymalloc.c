@@ -103,8 +103,10 @@ void* mymalloc(size_t allocationSize, char* filename, int line){
     if((metaBlock)myblock[0] == 0){
         initMalloc();
     }
-    if(allocationSize <= 0){
+    if(allocationSize < 0){
         printf("Error: provide positive size parameter for malloc()\tFile: %s, Line: %d\n", filename, line);
+        return NULL;
+    } else if (allocationSize == 0){
         return NULL;
     }
     metaBlock* current = (metaBlock*)myblock;
@@ -170,13 +172,3 @@ void myfree(void* p, char* filename, int line){
         printf("Error variable has already been freed\tFile:%s, Line:%d\n", filename, line);
     }
 }
-
-// int main(){
-//     void* a = malloc(200);
-//     void* b = malloc(300);
-//     printBlockList();
-//     printf("\n");
-//     free(a);
-//     free(b);
-//     printBlockList();
-// }   

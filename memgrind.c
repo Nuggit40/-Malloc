@@ -190,7 +190,7 @@ loadC[big_count] = (timeC.tv_usec) - (current_time.tv_usec);
       
 counter = 0;
       
-while (counter < 120 && big_count < 1)
+while (counter < 120)
 	{
 	  
 char *r = (char *) malloc (5000);
@@ -209,7 +209,7 @@ loadD[big_count] = (timeD.tv_usec) - (current_time.tv_usec);
 	//loadD[big_count] == current_time.tv_usec - last_time_interval;
 	last_time_interval = current_time.tv_usec;
       
-while (counter < 120 && big_count < 1)
+while (counter < 120)
 	{
 	  
 char *r = (char *) malloc (0);
